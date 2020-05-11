@@ -68,6 +68,7 @@ body{
 .rep{
     margin: 20px;
     border: 1px solid black;
+    border-radius: 0.5rem;
     display: none;
     background-color: mintcream;
     
@@ -81,6 +82,22 @@ h3{
 text-align: center;
 }
 
+/* RENDRE RESPONSSSIVE
+la fenêtre de visualisation a au moins 1100 pixels de large */
+@media screen and (min-width: 1100px) { 
+  #left { 
+   display: none; 
+  } 
+  .rep{
+    position: absolute;
+    float: right;
+    top: 10%;
+    left: 120%;
+    width: 342px;
+      }
+
+
+}
 
 </style>
     
@@ -95,9 +112,12 @@ text-align: center;
 
 <body>
   <div class=row>
-    <div class='col-md-3'></div>
+    <div class='col-md-3' id='left'></div>
       <div class='col-md-6'>
         <div class="card-body" id="main">
+
+          <!-- Formulaire -->
+
           <div class="formulaire">
 
             <div class="form-group"></div>
@@ -121,13 +141,15 @@ text-align: center;
               </div>
 
               <div class="form-group">
-                <label for="heure" class='col-sm-4 col-form-label'>Nombre d'heure hebdomadaire</label>
+                <label for="heure" class='col-sm-4 col-form-label'>Nombre d'heure journalier</label>
                 <input type="number" class="form-contro" v-model="heure" id="exampleInputPassword1">
               </div>
 
               <div class="button">
               <button type="button" class="btn btn-secondary" >Valider</button>
             </div>
+
+                    <!-- REPONSE SUITE A VALIDER -->
 
             <div class="rep">
               <div>
@@ -141,13 +163,16 @@ text-align: center;
                 nombre de jours travaillées : {{calculNberJours()}} jours
               </div>
               <div>
+                nombre d'heures Hebdomadaire : {{calculeNberHeuresHebdomadaire()}} Heures
+              </div>
+              <div>
                 nombre d'heures travaillées : {{calculeNberHeures()}} Heures
               </div>
               <div>
                 nombre de jours de congés : {{calculeJourCongé()}} Jours de congés
               </div>
               <div>
-                ETP : {{calculeEquivalentTempPlein()}} %
+                ETP : {{calculeEquivalentTempPlein()}}
               </div>
             </div>
           </div>
@@ -177,7 +202,7 @@ var test = new Vue ({
     },
 
     methods: {
-
+// CALCUL DU NOMBRE DE JOURS TRAVAILLEES
         calculNberJours: function() {     
          d1= Date.parse(this.debut); 
           d2 = Date.parse(this.fin);   
@@ -186,12 +211,19 @@ var test = new Vue ({
              return Math.round((nbjour/7)*5); 
         },
        
+// CALCUL DU NOMBRE D HEURES TRAVAILLEES
         calculeNberHeures:function(){
           
            nbreHeure = (nbjour * this.heure);
               return nbreHeure; 
         },
 
+// CALCUL DU NOMBRE D HEURES TOTALS TRAVAILLEES
+        calculeNberHeuresHebdomadaire(){
+          return (this.heure*5);
+        },
+
+// CALCUL DU NOMBRE DE CONGES 
         calculeJourCongé:function(){
           if(nbjour>28){
             nbreConge = ((2.8 * nbjour)/28);
@@ -200,12 +232,14 @@ var test = new Vue ({
             return "0";
           }
         },
-
+// CALCUL DU NOMBRE ETP
         calculeEquivalentTempPlein:function(){
-          return Math.round((this.heure*100)/7);
+          return ((this.heure)/7).toFixed(2);
         },
     }
 })
+
+// JQUERY - FAITS APPARAITRE LE CHAMP REPONSE AU CLICK SUR LE BOUTTON VALIDER
 $(document).ready(function(){
 
 $(".btn-secondary").click(function(){
