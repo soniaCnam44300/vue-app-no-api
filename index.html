@@ -204,11 +204,12 @@ var test = new Vue ({
          d1= Date.parse(this.debut); 
           d2 = Date.parse(this.fin);   
           
-          nbjour = (((d2-d1)/3600000)/24);
+          nbjour = (((d2-d1)/3600000)/24)+1;
+          
           if(Math.round(nbjour>365)){
               return 'Durée du contrat invalide';
           }
-             return Math.round((nbjour/7)*5)+1; 
+             return Math.round((nbjour/7)*5); 
         },
        
 
@@ -219,9 +220,13 @@ var test = new Vue ({
 
 // CALCUL DU NOMBRE DE CONGES 
         calculeJourCongé:function(){
-          if(nbjour>28){
-            nbreConge = ((2.8 * nbjour)/28);
-            return Math.round(nbreConge);
+          if(nbjour>27){
+            nbreConge = (( nbjour/28)*2.08);
+            if(nbreConge>=25){
+              nbreConge=25;
+            }
+            return Math.ceil(nbreConge);
+            
           }else{
             return "0";
           }
