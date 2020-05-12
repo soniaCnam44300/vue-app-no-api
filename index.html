@@ -69,7 +69,6 @@ body{
     margin: 20px;
     border: 1px solid black;
     border-radius: 0.5rem;
-    display: none;
     background-color: mintcream;
     
 }
@@ -94,6 +93,7 @@ la fenêtre de visualisation a au moins 1100 pixels de large */
     top: 10%;
     left: 120%;
     width: 342px;
+    text-align: left;
       }
 
 
@@ -166,9 +166,6 @@ la fenêtre de visualisation a au moins 1100 pixels de large */
                 nombre d'heures Hebdomadaire : {{calculeNberHeuresHebdomadaire()}} Heures
               </div>
               <div>
-                nombre d'heures travaillées : {{calculeNberHeures()}} Heures
-              </div>
-              <div>
                 nombre de jours de congés : {{calculeJourCongé()}} Jours de congés
               </div>
               <div>
@@ -208,15 +205,12 @@ var test = new Vue ({
           d2 = Date.parse(this.fin);   
           
           nbjour = (((d2-d1)/3600000)/24);
-             return Math.round((nbjour/7)*5); 
+          if(Math.round(nbjour>365)){
+              return 'Durée du contrat invalide';
+          }
+             return Math.round((nbjour/7)*5)+1; 
         },
        
-// CALCUL DU NOMBRE D HEURES TRAVAILLEES
-        calculeNberHeures:function(){
-          
-           nbreHeure = (nbjour * this.heure);
-              return nbreHeure; 
-        },
 
 // CALCUL DU NOMBRE D HEURES TOTALS TRAVAILLEES
         calculeNberHeuresHebdomadaire(){
@@ -239,15 +233,7 @@ var test = new Vue ({
     }
 })
 
-// JQUERY - FAITS APPARAITRE LE CHAMP REPONSE AU CLICK SUR LE BOUTTON VALIDER
-$(document).ready(function(){
 
-$(".btn-secondary").click(function(){
-    $('.rep').css('display', 'block');
-    
-        });
-
-    });
 
 </script>
 
